@@ -25,7 +25,7 @@ class CalculatorTestCase(unittest.TestCase):
                     elif operator == '*':
                         result = operand1 * operand2
                     elif operator == '%':
-                        result = operand1 / operand2
+                        result = operand1 % operand2
                     else:
                         return 'Invalid operator'
 
