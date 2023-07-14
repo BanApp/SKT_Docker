@@ -1,0 +1,33 @@
+name: Build and Push Docker Image
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+  DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Build and push calculator Docker image
+        env:
+          RESULTPATH: result/
+        run: |
+          docker buildx build --file Dockerfile.calculator --output "type=image,push=true" --platform linux/amd64 --tag $DOCKERHUB_USERNAME/calculator:latest .
+
+      - name: Build and push generator Docker image
+        env:
+          RESULTPATH: result/
+        run: |
+          docker buildx build --file Dockerfile.generator --output "type=image,push=true" --platform linux/amd64 --tag $DOCKERHUB_USERNAME/generator:latest .
