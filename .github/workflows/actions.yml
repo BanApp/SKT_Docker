@@ -24,10 +24,12 @@ jobs:
         env:
           RESULTPATH: result/
         run: |
-          docker buildx build --file Dockerfile.calculator --output "type=image,push=true" --platform linux/amd64 --tag $DOCKERHUB_USERNAME/calculator:latest .
+          docker build -t $DOCKERHUB_USERNAME/calculator -f Dockerfile.calculator .
+          docker push $DOCKERHUB_USERNAME/calculator
 
       - name: Build and push generator Docker image
         env:
           RESULTPATH: result/
         run: |
-          docker buildx build --file Dockerfile.generator --output "type=image,push=true" --platform linux/amd64 --tag $DOCKERHUB_USERNAME/generator:latest .
+          docker build -t $DOCKERHUB_USERNAME/generator -f Dockerfile.generator .
+          docker push $DOCKERHUB_USERNAME/generator
