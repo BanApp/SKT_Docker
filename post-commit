@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Function to generate Dockerfiles
+generate_dockerfiles() {
+    echo "Generating Dockerfiles..."
+    docker run --rm -v "$(pwd)":/app -w /app calculator-app bash -c "python3 generator.py"
+}
+
+# Generate Dockerfiles
+generate_dockerfiles

@@ -1,0 +1,48 @@
+#!/bin/bash
+
+# Define the RESULTPATH environment variable
+export RESULTPATH="${repo_path}/result/"
+
+# Define the path to Dockerfiles
+calculator_dockerfile="Dockerfile.calculator"
+generator_dockerfile="Dockerfile.generator"
+
+# Define the paths to source files
+calculator_source="calculator.py"
+
+# Function to check if a file has changed
+has_changed() {
+    git diff-index --quiet HEAD -- "$1" || return 1
+}
+
+# Function to build Docker images
+build_images() {
+    docker build -t calculator-app -f "${calculator_dockerfile}" .
+    docker build -t generator-app -f "${generator_dockerfile}" .
+}
+
+# Function to push Docker images
+push_images() {
+    docker push calculator-app
+    docker push generator-app
+}
+
+# Function to run tests for calculator.py
+run_calculator_tests() {
+    echo "Running tests for calculator.py..."
+    python3 -m unittest calculator_test.py
+}
+
+# Check if calculator.py has changed
+if has_changed "${calculator_source}"; then
+    run_calculator_tests
+    # If tests fail, exit with non-zero status
+    # For example:
+    # if [ $? -ne 0 ]; then
+    #     echo "Calculator tests failed. Aborting commit."
+    #     exit 1
+    # fi
+fi
+
+# Build and push Docker images
+build_images
