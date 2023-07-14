@@ -34,25 +34,12 @@ jobs:
         env:
           RESULTPATH: result/
         run: |
-          echo "FROM python:3.9-slim" >> Dockerfile
-          echo "RUN apt-get update && apt-get install -y git" >> Dockerfile
-          echo "RUN pip install flask" >> Dockerfile
-          echo "COPY calculator.py /app/calculator.py" >> Dockerfile
-          echo "WORKDIR /app" >> Dockerfile
-          echo "ENV RESULTPATH=result/" >> Dockerfile
-          echo "CMD python3 calculator.py" >> Dockerfile
-          docker build -t $DOCKERHUB_USERNAME/calculator:latest .
+          docker build -t $DOCKERHUB_USERNAME/calculator:latest -f Dockerfile.calculator .
           docker push $DOCKERHUB_USERNAME/calculator:latest
       
       - name: Build and push generator Docker image
         env:
           RESULTPATH: result/
         run: |
-          echo "FROM python:3.9-slim" >> Dockerfile
-          echo "RUN apt-get update && apt-get install -y git" >> Dockerfile
-          echo "COPY generator.py /app/generator.py" >> Dockerfile
-          echo "WORKDIR /app" >> Dockerfile
-          echo "ENV RESULTPATH=result/" >> Dockerfile
-          echo "CMD python3 generator.py" >> Dockerfile
-          docker build -t $DOCKERHUB_USERNAME/generator:latest .
+          docker build -t $DOCKERHUB_USERNAME/generator:latest -f Dockerfile.generator .
           docker push $DOCKERHUB_USERNAME/generator:latest
