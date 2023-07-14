@@ -24,12 +24,12 @@ jobs:
         env:
           RESULTPATH: result/
         run: |
-          docker build -t $DOCKERHUB_USERNAME/calculator -f Dockerfile.calculator .
-          docker push $DOCKERHUB_USERNAME/calculator
+          docker build -t $DOCKERHUB_USERNAME/calculator:latest -f Dockerfile.calculator .
+          docker push $DOCKERHUB_USERNAME/calculator:latest
 
       - name: Build and push generator Docker image
         env:
           RESULTPATH: result/
         run: |
-          docker build -t $DOCKERHUB_USERNAME/generator -f Dockerfile.generator .
-          docker push $DOCKERHUB_USERNAME/generator
+          docker build -t $DOCKERHUB_USERNAME/generator:latest -f Dockerfile.generator .
+          docker push $DOCKERHUB_USERNAME/generator:latest
