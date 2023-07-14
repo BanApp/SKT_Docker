@@ -1,6 +1,8 @@
 from flask import Flask, request
 import os
 
+#깃허브 액션 테스트
+
 app = Flask(__name__)
 
 path = os.environ['RESULTPATH']
