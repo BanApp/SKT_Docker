@@ -20,7 +20,7 @@ def perform_calculation(operator):
             elif operator == '*':
                 result = operand1 * operand2
             elif operator == '%':
-                result = operand1 / operand2
+                result = operand1 % operand2
             else:
                 return 'Invalid operator'
             
