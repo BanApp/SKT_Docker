@@ -11,6 +11,6 @@ COPY calculator.py requirements.txt /app/
 
 ENV RESULTPATH=result/
 
-RUN pip3 install --no-cache-dir -r requirements.txt
+RUN pip3 install -r requirements.txt
 
 CMD python3 calculator.py
