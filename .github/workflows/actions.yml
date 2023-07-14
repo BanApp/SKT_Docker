@@ -1,35 +1,58 @@
-name: Build and Push Docker Image
+name: deploy
 
 on:
   push:
     branches:
       - main
 
-env:
-  DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-  DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
-
 jobs:
-  build-and-push:
+  build:
+    name: Build
     runs-on: ubuntu-latest
-
+    defaults:
+      run:
+        shell: bash
+    
     steps:
-      - name: Checkout repository
+      - uses: actions/checkout@v2
+      
+  docker:
+    name: Deploy Docker Image
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout
         uses: actions/checkout@v2
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-
+        
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      
       - name: Build and push calculator Docker image
         env:
           RESULTPATH: result/
         run: |
-          docker build -t $DOCKERHUB_USERNAME/calculator:latest -f Dockerfile.calculator .
+          echo "FROM python:3.9-slim" >> Dockerfile
+          echo "RUN apt-get update && apt-get install -y git" >> Dockerfile
+          echo "RUN pip install flask" >> Dockerfile
+          echo "COPY calculator.py /app/calculator.py" >> Dockerfile
+          echo "WORKDIR /app" >> Dockerfile
+          echo "ENV RESULTPATH=result/" >> Dockerfile
+          echo "CMD python3 calculator.py" >> Dockerfile
+          docker build -t $DOCKERHUB_USERNAME/calculator:latest .
           docker push $DOCKERHUB_USERNAME/calculator:latest
-
+      
       - name: Build and push generator Docker image
         env:
           RESULTPATH: result/
         run: |
-          docker build -t $DOCKERHUB_USERNAME/generator:latest -f Dockerfile.generator .
+          echo "FROM python:3.9-slim" >> Dockerfile
+          echo "RUN apt-get update && apt-get install -y git" >> Dockerfile
+          echo "COPY generator.py /app/generator.py" >> Dockerfile
+          echo "WORKDIR /app" >> Dockerfile
+          echo "ENV RESULTPATH=result/" >> Dockerfile
+          echo "CMD python3 generator.py" >> Dockerfile
+          docker build -t $DOCKERHUB_USERNAME/generator:latest .
           docker push $DOCKERHUB_USERNAME/generator:latest
