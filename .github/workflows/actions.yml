@@ -27,19 +27,19 @@ jobs:
       - name: Login to Docker Hub
         uses: docker/login-action@v2
         with:
-          username: jmj0801
-          password: ${{ jmj0801.DOCKERHUB_TOKEN }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
       
       - name: Build and push calculator Docker image
         env:
           RESULTPATH: result/
         run: |
-          docker build -t $DOCKERHUB_USERNAME/calculator:latest -f Dockerfile.calculator .
-          docker push $DOCKERHUB_USERNAME/calculator:latest
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/calculator:latest -f Dockerfile.calculator .
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/calculator:latest
       
       - name: Build and push generator Docker image
         env:
           RESULTPATH: result/
         run: |
-          docker build -t $DOCKERHUB_USERNAME/generator:latest -f Dockerfile.generator .
-          docker push $DOCKERHUB_USERNAME/generator:latest
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/generator:latest -f Dockerfile.generator .
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/generator:latest
