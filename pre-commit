@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Define the RESULTPATH environment variable
 export RESULTPATH="${repo_path}/result/"
@@ -9,6 +9,7 @@ generator_dockerfile="Dockerfile.generator"
 
 # Define the paths to source files
 calculator_source="calculator.py"
+calculator_test="calculator_test.py"
 
 # Function to check if a file has changed
 has_changed() {
@@ -30,18 +31,17 @@ push_images() {
 # Function to run tests for calculator.py
 run_calculator_tests() {
     echo "Running tests for calculator.py..."
-    python3 -m unittest calculator_test.py
+    python3 -m unittest "${calculator_test}"
+    # If tests fail, exit with non-zero status
+    if [ $? -ne 0 ]; then
+        echo "Calculator tests failed. Aborting commit."
+        exit 1
+    fi
 }
 
 # Check if calculator.py has changed
 if has_changed "${calculator_source}"; then
     run_calculator_tests
-    # If tests fail, exit with non-zero status
-    # For example:
-    # if [ $? -ne 0 ]; then
-    #     echo "Calculator tests failed. Aborting commit."
-    #     exit 1
-    # fi
 fi
 
 # Build and push Docker images
