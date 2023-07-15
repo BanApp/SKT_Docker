@@ -43,3 +43,7 @@ docker run -it -v "C:\Users\064\Desktop\HW2:/app" -p 5000:5000 calculator-app
 ## github actions
 
 - commit 발생시 도커 이미지 빌드후 도커 허브에 배포 자동화.
+
+## Docker Swarm
+
+docker service create --name calculator-app --replicas 3 --publish published=5000,target=5000 calculator-app
