@@ -34,12 +34,12 @@ jobs:
         env:
           RESULTPATH: result/
         run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/calculator:latest -f Dockerfile.calculator .
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/calculator:latest
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/calculator-app:latest -f Dockerfile.calculator .
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/calculator-app:latest
       
       - name: Build and push generator Docker image
         env:
           RESULTPATH: result/
         run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/generator:latest -f Dockerfile.generator .
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/generator:latest
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/generator-app:latest -f Dockerfile.generator .
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/generator-app:latest
