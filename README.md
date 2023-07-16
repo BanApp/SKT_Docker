@@ -4,9 +4,11 @@
 
 - generator.py : 0 ~ 1000 사이 숫자 두개를 중복을 허용해서 추출하고 result 폴더의 input.txt에 저장하고 종료.
   
-- calculator.py : flask로 구성된 백엔드 서버. result 폴더에 존재하는 input.txt에 존재하는 숫자 두개를 읽어들인후 uri를 통해서 Operator를 전달받아서 연산된 결과를 반환한다.(+: 덧샘, -: 뺄샘, *: 곱샘, %: 나눗샘의 몫 )
+- calculator.py : flask로 구성된 백엔드 서버. result 폴더에 존재하는 input.txt에 존재하는 숫자 두개를 읽어들인후 uri를 통해서 Operator를 전달받아서 연산된 결과를 반환한다.(+: 덧샘, -: 뺄샘, *: 곱샘, %: 나눗셈 나머지 )
   
-- calculator_test.py : 총 5개의 테스트 케이스가 주어진다. 미리 설정된 두개의 숫자의 연산결과가 옳을 경우 통과를 한다. 
+- calculator_test.py : 총 5개의 테스트 케이스가 주어진다. 미리 설정된 두개의 숫자의 연산결과가 옳을 경우 통과를 한다.
+
+- 예시 명령어 : curl -X POST http://localhost:5000/calculate/% , curl -X POST http://localhost:5000/calculate/+
 
 
 ## 직접 빌드 및 실행 명령어
